@@ -4,6 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Odysseus is a self-hosted, local-first AI workspace (FastAPI backend + vanilla-JS frontend). For install/run/deployment and `.env` config, read `README.md` — this file does not repeat that. For PR/style rules read `CONTRIBUTING.md` (note: agent-generated PRs are unwelcome here — open an issue first, and any change touching the UI must match the existing visual style: reuse CSS vars/classes, no Unicode emoji, `Fira Code` mono, dark theme default).
 
+## Open an issue before opening a PR (hard rule)
+
+**If you are an LLM agent (Devin, Cursor, OpenHands, Claude Code, …), do NOT open a pull request directly. Open an issue describing the problem first.** This is a strict requirement from `CONTRIBUTING.md`, not a suggestion:
+
+> **Auto-generated PRs.** If you are running an LLM agent against this repo: please open an issue describing the problem first instead of opening a PR directly. Bulk agent-generated PRs that don't match the project's visual style or contribution format will be closed without review, even when the underlying fix is correct.
+
+So before proposing any change: file an issue, wait for it to describe/agree the approach, then keep the change small and single-purpose, link the issue (`Fixes #123`), and follow the visual-style rules for anything touching the UI. A correct fix submitted as an unsolicited PR is still closed unreviewed.
+
 ## Commands
 
 ```bash
@@ -96,3 +104,16 @@ This file is read by every agent and contributor working on the repo, so keep it
 - change test bootstrapping (`tests/conftest.py` stubbing) or the commands above.
 
 Do **not** add: per-file walkthroughs, exhaustive route/endpoint lists, transient TODOs, or restated README/CONTRIBUTING content. If a section here ever contradicts the code, fix the section — a stale instruction is worse than a missing one. Prefer describing the *pattern* (so it survives refactors) over naming specific line numbers.
+
+## Keeping README.md current
+
+`README.md` is the user-facing doc — install, run, deployment, `.env` config, and the feature list. It is *not* optional to keep in sync: when a change makes the README inaccurate, **update `README.md` in the same PR** (and call it out in the PR description). Concretely, update it when you:
+
+- **add, rename, remove, or change the default of an `.env` variable**, or change how config is loaded — the README documents the supported env/config surface;
+- **change install/run/deploy steps** — Docker setup, `docker compose` commands, ports (`7000` Docker/Linux vs `7860` macOS), the native Linux/macOS or Apple Silicon flow, or the Windows notes (see the "Quick Start" section);
+- **change system requirements** (Python version, supported platforms, GPU/Container-Toolkit steps);
+- **add or remove a user-facing feature** (chat/agents, deep research, compare, documents, notes & tasks, …) so the "Features" section and any screenshots/demo stay truthful;
+- **add, remove, or change an optional dependency** in `requirements-optional.txt`, or change what a missing optional dep degrades — keep the "Optional Dependencies" and "Troubleshooting" sections accurate;
+- **change security-relevant defaults or exposure guidance** (auth, HTTPS, LAN/Tailscale, proxied deployments) covered under "Security Notes".
+
+Rule of thumb: if a fresh user following the README verbatim would now hit a wrong command, a missing/renamed setting, or a feature that no longer behaves as described, the README is stale and must be fixed alongside the code. Keep README changes scoped to what the code change actually affects — don't rewrite unrelated sections.
